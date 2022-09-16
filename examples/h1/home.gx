@@ -1,0 +1,10 @@
+
+func Home() *ComponentInstance {
+	println("goodbye")
+	return <>
+		<div class="hello">
+			<h1>Hello Bye!</h1>
+			<h4>This is GX</h4>
+		</div>
+	</>
+}
