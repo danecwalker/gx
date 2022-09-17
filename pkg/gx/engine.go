@@ -79,16 +79,18 @@ func transpile(node *NodeP) string {
 		strings.Repeat(" ", 4),
 	)
 
-	_m := ""
+	_mi := ""
+	_ma := ""
 
 	for _, v := range variables {
 		if v.parent == "" {
-			_m = fmt.Sprintf(`%sInsert(target, %s, anchor)%s`, strings.Repeat(" ", 6), v.name, "\n") + _m
+			_mi += fmt.Sprintf(`%sInsert(target, %s, anchor)%s`, strings.Repeat(" ", 6), v.name, "\n")
 		} else {
-			_m += fmt.Sprintf(`%sAppend(%s, %s)%s`, strings.Repeat(" ", 6), v.parent, v.name, "\n")
+			_ma += fmt.Sprintf(`%sAppend(%s, %s)%s`, strings.Repeat(" ", 6), v.parent, v.name, "\n")
 		}
 	}
 
+	_m := _mi + _ma
 	_m += fmt.Sprintf("%sif !mounted { mounted = true }\n", strings.Repeat(" ", 6))
 
 	_l := ""
