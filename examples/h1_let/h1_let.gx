@@ -1,0 +1,7 @@
+export Home = fn() {
+  let a  = "World"
+
+  return (
+    <h1>Hello {a}</h1>
+  )
+}

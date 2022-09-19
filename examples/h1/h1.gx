@@ -1,0 +1,9 @@
+let add = fn(a, b) {
+  if ((a + b) < 10) {
+    a * b
+  } else {
+    return a + b;
+  }
+}
+
+add(4, 6)

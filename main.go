@@ -1,33 +1,27 @@
 package main
 
 import (
+	"bufio"
 	"io"
 	"os"
-	"os/exec"
 
-	gx "github.com/danecwalker/gx/pkg/gx"
+	"github.com/danecwalker/gx/pkg/gx"
 )
 
 func main() {
-	f, err := os.Open("./examples/h1/home.gx")
+	f, err := os.Open("./examples/h1/h1.gx")
 	if err != nil {
 		panic(err)
 	}
-	defer f.Close()
-	s, err := io.ReadAll(f)
-	if err != nil {
-		panic(err)
-	}
-	res := gx.GetRender(string(s))
-	_f, err := os.Create("./examples/h1/home.go")
-	if err != nil {
-		panic(err)
-	}
-	defer _f.Close()
-	_f.Write([]byte(res))
 
-	os.Setenv("GOOS", "js")
-	os.Setenv("GOARCH", "wasm")
-	cmd := exec.Command("go", "build", "-o", "main.wasm", "./examples/h1")
-	cmd.Run()
+	lex := gx.NewLexer(bufio.NewReader(f))
+	p := gx.NewParser(lex)
+	program := p.ParseProgram()
+	evaluated := gx.Eval(program, gx.NewEnvironment())
+	if evaluated != nil {
+		io.WriteString(os.Stdout, evaluated.Inspect())
+		io.WriteString(os.Stdout, "\n")
+	}
+	// repl := gx.NewREPL(">> ")
+	// repl.Start()
 }
